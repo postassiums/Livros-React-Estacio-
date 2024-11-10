@@ -43,6 +43,14 @@ export interface InputComponentProps{
 export enum SessionStorageKeys{
     LIVROS='livros'
 }
+export interface SpinnerProps{
+    show: boolean
+}
+export interface ButtonProps{
+    loading: boolean,
+    label: string,
+    type: 'submit' | 'button'
+}
 
 export interface TextAreaComponentProps extends Pick<InputComponentProps,'label' | 'placeholder' | 'value'>{
     setState:  React.Dispatch<React.SetStateAction<string>>

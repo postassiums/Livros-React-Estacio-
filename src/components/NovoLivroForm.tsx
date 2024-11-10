@@ -7,6 +7,7 @@ import { Editora, LivroUpdate, SessionStorageKeys } from "../types";
 import { useNavigate } from "react-router-dom";
 import { getEditoras } from "../service/get";
 import { createLivro } from "../service/post";
+import ButtonComponent from "./ButtonComponent";
 
 
 
@@ -21,16 +22,20 @@ export default function NovoLivroForm()
     const [resumo,setResumo]=useState<string>('')
     const [autores,setAutores]=useState<string>('')
     const [editora,setEditora]=useState<string>('')
+    const [saving,setSaving]=useState<boolean>(false)
+    const [editoraLoading,setEditoraLoading]=useState<boolean>(false)
 
     useEffect(()=>{
         getEditoras()
         .then(editoras_result=>{
+            setEditoraLoading(true)
             let options=editoras_result.map(item=>({label: item.name,value: String(item.codigo)}))
             setEditoraOptions(options)
             setEditora(options[0].value)
     
         }
         )
+        .finally(()=>setEditoraLoading(false))
 
     },[])
 
@@ -40,17 +45,24 @@ export default function NovoLivroForm()
     {
         
         e.preventDefault()
-        if(titulo && resumo && autores && editora)
+        if(!(titulo && resumo && autores && editora))
         {
+            return
             
+        }
+        try{
+            setSaving(true)
             let new_livro=new LivroUpdate(titulo,resumo,Number(editora),autores?.split('\n'))
             await createLivro(new_livro)
 
             
             
             navigate('/catalogo')
-            
+        }catch(e)
+        {
 
+        }finally{
+            setSaving(false)
         }
     }
 
@@ -83,7 +95,10 @@ export default function NovoLivroForm()
 
                     </TextAreComponent>
                 </div>
-                <button type="submit" className="btn btn-primary">Salvar Dados</button>
+                <ButtonComponent type="submit" label="Salvar Dados" loading={saving}>
+
+                </ButtonComponent>
+           
         
             </form>
         </>
