@@ -1,20 +1,34 @@
-import { ChangeEventHandler } from "react"
 
-export class Livro{
+
+export class LivroUpdate{
 
     titulo : string
     resumo : string
-    editora: string
+    codEditora: number
     autores: string[]
 
-    constructor(titulo : string,resumo: string,editora: string,autores: string[])
+    constructor(titulo : string,resumo: string,codEditora: number,autores: string[])
     {
         this.titulo=titulo
         this.resumo=resumo
-        this.editora=editora
+        this.codEditora=codEditora
         this.autores=autores
     }
 }
+
+export interface LivroResponse{
+    _id: string
+    titulo: string
+    resumo: string
+    editora: string
+    autores: string[]
+}
+
+export interface Editora{
+    name: string
+    codigo: number
+}
+
 
 
 
@@ -38,8 +52,8 @@ export interface TextAreaComponentProps extends Pick<InputComponentProps,'label'
 export interface SelectComponentProps{
     label: string,
     value: any,
-    setState:  React.Dispatch<React.SetStateAction<string>>
-    options: string[],
+    setState:  React.Dispatch<React.SetStateAction< string>>
+    options: {label: string,value: string}[],
     is_required: boolean
 }
 
@@ -58,7 +72,6 @@ export class NavBarLink{
 }
 
 export interface LivroLinhaProps{
-    livro: Livro
-    index: number
-    onDelete: (index: number)=>void
+    livro: LivroResponse
+    onDelete: (_id: string)=>void
 }

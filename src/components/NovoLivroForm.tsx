@@ -1,51 +1,53 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import InputComponent from "./InputComponent";
 import Title from "./Title";
 import TextAreComponent from "./TextAreaComponent";
 import SelectComponent from "./SelectComponent";
-import { Livro, SessionStorageKeys } from "../types";
+import { Editora, LivroUpdate, SessionStorageKeys } from "../types";
 import { useNavigate } from "react-router-dom";
+import { getEditoras } from "../service/get";
+import { createLivro } from "../service/post";
 
 
 
 export default function NovoLivroForm()
 {
-    const EDITORAS_OPTIONS = [
-        "Companhia das Letras",
-        "Editora Record",
-        "Intrínseca",
-        "Globo Livros",
-        "Editora Rocco",
-        "Editora 34",
-        "Editora Planeta",
-        "Editora Aleph",
-        "Sextante",
-        "DarkSide Books"
-      ];
+    
+    const [editora_options,setEditoraOptions] = useState<{label: string,value: string}[]>([]);
+   
+
       
     const [titulo,setTitle]=useState<string>('')
     const [resumo,setResumo]=useState<string>('')
     const [autores,setAutores]=useState<string>('')
-    const [editora,setEditora]=useState<string>(EDITORAS_OPTIONS[0])
+    const [editora,setEditora]=useState<string>('')
+
+    useEffect(()=>{
+        getEditoras()
+        .then(editoras_result=>{
+            let options=editoras_result.map(item=>({label: item.name,value: String(item.codigo)}))
+            setEditoraOptions(options)
+            setEditora(options[0].value)
+    
+        }
+        )
+
+    },[])
+
+
     const navigate=useNavigate()
-    function onSubmitForm(e : FormEvent)
+    async function onSubmitForm(e : FormEvent)
     {
         
         e.preventDefault()
         if(titulo && resumo && autores && editora)
         {
             
-            let new_livro=new Livro(titulo,resumo,editora,autores?.split('\n'))
-            let existing_livros : Array<Livro> = []
-            let livros_storage_item=sessionStorage.getItem(SessionStorageKeys.LIVROS)
-            if(livros_storage_item!= null)
-            {
-                existing_livros=JSON.parse(livros_storage_item) 
-            }
+            let new_livro=new LivroUpdate(titulo,resumo,Number(editora),autores?.split('\n'))
+            await createLivro(new_livro)
 
             
-            existing_livros.push(new_livro)
-            sessionStorage.setItem(SessionStorageKeys.LIVROS,JSON.stringify(existing_livros))
+            
             navigate('/catalogo')
             
 
@@ -71,7 +73,7 @@ export default function NovoLivroForm()
                     </TextAreComponent>
                 </div>
                 <div className="form-group mb-3">
-                    <SelectComponent is_required={true} label="Editora" setState={setEditora} value={editora} options={EDITORAS_OPTIONS} >
+                    <SelectComponent is_required={true} label="Editora" setState={setEditora} value={editora} options={editora_options} >
 
                     </SelectComponent>
                 </div>

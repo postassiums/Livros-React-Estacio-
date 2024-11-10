@@ -1,7 +1,9 @@
-import {  useState } from "react"
-import { Livro, SessionStorageKeys } from "../types"
+import {  useEffect, useState } from "react"
+import { LivroUpdate, LivroResponse, SessionStorageKeys } from "../types"
 import LivroLinha from "./LivroLinha"
 import Title from "./Title"
+import { getLivros } from "../service/get"
+import { deleteLivro } from "../service/delete"
 
 
 
@@ -10,15 +12,9 @@ export default function LivroLista()
 {
     const COLUMNS=['Título','Resumo','Editora','Autores']
 
-    let livros_on_storage=sessionStorage.getItem(SessionStorageKeys.LIVROS)
-    let existing_livros : Array<Livro> =[]
+ 
 
-    if(livros_on_storage!=null)
-    {
-        existing_livros=JSON.parse(livros_on_storage)
-    }
-
-    const [livros,setLivros] =useState<Array<Livro>>(existing_livros)
+    const [livros,setLivros] =useState<Array<LivroResponse>>([])
 
     function getTableColumns()
     {
@@ -29,20 +25,27 @@ export default function LivroLista()
 
           
     }
-    function onDeleteLivro(index : number)
+    async function onDeleteLivro(id : string)
     {
-        let livros_on_storage=sessionStorage.getItem(SessionStorageKeys.LIVROS)
-        if (livros_on_storage==null)
+        try{
+            await deleteLivro(id)
+            setLivros(current_livros=>current_livros.filter(item=>item._id!=id))
+        }catch(e)
         {
-            return
+
+        }finally{
+            
         }
-        let livros : Array<Livro>=JSON.parse(livros_on_storage)
-        livros.splice(index,1)
-        setLivros(livros)
-        sessionStorage.setItem(SessionStorageKeys.LIVROS,JSON.stringify(livros))
+
+        
     }
 
-
+    useEffect(()=>{
+        getLivros()
+        .then((response)=>{
+            setLivros(response)
+        })
+    },[])
 
     return (
         <>
@@ -57,7 +60,7 @@ export default function LivroLista()
             </tr>
         </thead>
         <tbody>
-            {livros.map((item,index)=><LivroLinha onDelete={onDeleteLivro} index={index} key={index} livro={item}>
+            {livros.map((item)=><LivroLinha onDelete={onDeleteLivro} key={item._id} livro={item}>
 
             </LivroLinha>)}
             

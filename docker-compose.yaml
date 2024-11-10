@@ -1,0 +1,18 @@
+name: livros-react
+services:
+  frontend:
+    container_name: livros-react
+    build:
+      context: .
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - $VITE_PORT:$VITE_PORT
+    command: --port $VITE_PORT --host 0.0.0.0
+    networks:
+      - frontend-net
+networks:
+  frontend-net:
+    external: true
+    name: estacio-net

@@ -6,12 +6,13 @@ export default function SelectComponent({label,options,setState,value,is_require
     const random_id=String(new Date().getTime())
     function getOptions()
     {
-        return options.map((option,index)=><option key={index} >{option} </option>)
+        return options.map((option,index)=><option value={option.value} key={index} >{option.label} </option>)
     }
+
     return (
         <>
             <label htmlFor={random_id}>{label}</label>
-            <select required={is_required} onChange={data=>setState(data.target.value)} value={value} className="form-select" id={random_id}>
+            <select required={is_required} onChange={data=>setState(String(data.target.value))} value={value} className="form-select" id={random_id}>
                 {getOptions()}
             
             </select>
