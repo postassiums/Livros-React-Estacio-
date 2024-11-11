@@ -25,7 +25,7 @@ export interface LivroResponse{
 }
 
 export interface Editora{
-    name: string
+    nome: string
     codigo: number
 }
 

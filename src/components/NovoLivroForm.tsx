@@ -29,7 +29,7 @@ export default function NovoLivroForm()
         getEditoras()
         .then(editoras_result=>{
             setEditoraLoading(true)
-            let options=editoras_result.map(item=>({label: item.name,value: String(item.codigo)}))
+            let options=editoras_result.map(item=>({label: item.nome,value: String(item.codigo)}))
             setEditoraOptions(options)
             setEditora(options[0].value)
     
