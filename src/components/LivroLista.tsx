@@ -4,6 +4,7 @@ import LivroLinha from "./LivroLinha"
 import Title from "./Title"
 import { getLivros } from "../service/get"
 import { deleteLivro } from "../service/delete"
+import Spinner from "./Spinner"
 
 
 
@@ -15,6 +16,7 @@ export default function LivroLista()
  
 
     const [livros,setLivros] =useState<Array<LivroResponse>>([])
+    const [loading,setLoading]=useState<boolean>(true)
 
     function getTableColumns()
     {
@@ -43,8 +45,10 @@ export default function LivroLista()
     useEffect(()=>{
         getLivros()
         .then((response)=>{
+            setLoading(true)
             setLivros(response)
         })
+        .finally(()=>setLoading(false))
     },[])
 
     return (
@@ -60,12 +64,20 @@ export default function LivroLista()
             </tr>
         </thead>
         <tbody>
+        
+
             {livros.map((item)=><LivroLinha onDelete={onDeleteLivro} key={item._id} livro={item}>
 
             </LivroLinha>)}
             
         </tbody>
         </table>
+            <div className="d-flex justify-content-center">
+                <Spinner style={{width: '4em',height: '4em'}} show={loading}>
+
+                </Spinner>
+
+            </div>
 
 
         </>

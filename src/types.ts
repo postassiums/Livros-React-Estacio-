@@ -45,6 +45,7 @@ export enum SessionStorageKeys{
 }
 export interface SpinnerProps{
     show: boolean
+    style?: any
 }
 export interface ButtonProps{
     loading: boolean,
