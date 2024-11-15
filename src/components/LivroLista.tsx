@@ -16,7 +16,7 @@ export default function LivroLista()
  
 
     const [livros,setLivros] =useState<Array<LivroResponse>>([])
-    const [loading,setLoading]=useState<boolean>(false)
+    const [loading,setLoading]=useState<boolean>(true)
     
 
     function getTableColumns()
@@ -31,7 +31,6 @@ export default function LivroLista()
     async function onDeleteLivro(id : string)
     {
     
-        setLoading(true)
         await deleteLivro(id)
         setLivros(current_livros=>current_livros.filter(item=>item._id!=id))
 
