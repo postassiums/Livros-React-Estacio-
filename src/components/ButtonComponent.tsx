@@ -2,11 +2,11 @@ import { ButtonProps } from "../types"
 import Spinner from "./Spinner"
 
 
-export default function ButtonComponent({label,loading=false,type='submit'} : ButtonProps)
+export default function ButtonComponent({label,loading=false,type='submit',className='',onClick} : ButtonProps)
 {
    
     return (
-        <button type={type} className="btn btn-primary text-center">
+        <button onClick={onClick} type={type} className={` btn btn-primary text-center ${className}`}>
             <Spinner show={loading}>
 
             </Spinner>

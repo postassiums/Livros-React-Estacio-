@@ -51,6 +51,8 @@ export interface ButtonProps{
     loading: boolean,
     label: string,
     type: 'submit' | 'button'
+    className: string
+    onClick: ()=>any
 }
 
 export interface TextAreaComponentProps extends Pick<InputComponentProps,'label' | 'placeholder' | 'value'>{
@@ -82,5 +84,5 @@ export class NavBarLink{
 
 export interface LivroLinhaProps{
     livro: LivroResponse
-    onDelete: (_id: string)=>void
+    onDelete: (_id: string)=>Promise<void>
 }

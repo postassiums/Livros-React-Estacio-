@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { LivroLinhaProps } from "../types";
+import ButtonComponent from "./ButtonComponent";
 
 
 
@@ -8,12 +10,29 @@ import { LivroLinhaProps } from "../types";
 
 export default function LivroLinha({livro,onDelete} : LivroLinhaProps)
 {
+    const [loading,setLoading]=useState<boolean>(false)
+    async function onButtonClick()
+    {
+        try{
+            setLoading(true)
+            await onDelete(livro._id)
+        }catch(e)
+        {
+
+        }finally{
+            setLoading(false)
+        }
+    }
+
     return (
         <tr>
             <td >
                 <div >
                     <div className="w-100">{livro.titulo}</div>
-                    <button   onClick={()=>onDelete(livro._id)} type="button" className="btn btn-danger mt-3">Excluir</button>
+                    <ButtonComponent  onClick={onButtonClick} type="button" label="Excluir" className="btn btn-danger mt-3" loading={loading}>
+
+                    </ButtonComponent>
+                   
                 </div>
                 
             </td>
