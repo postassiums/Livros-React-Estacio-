@@ -85,7 +85,7 @@ export default function NovoLivroForm()
                     </TextAreComponent>
                 </div>
                 <div className="form-group mb-3">
-                    <SelectComponent is_required={true} label="Editora" setState={setEditora} value={editora} options={editora_options} >
+                    <SelectComponent loading={editoraLoading} is_required={true} label="Editora" setState={setEditora} value={editora} options={editora_options} >
 
                     </SelectComponent>
                 </div>
@@ -95,7 +95,7 @@ export default function NovoLivroForm()
 
                     </TextAreComponent>
                 </div>
-                <ButtonComponent type="submit" label="Salvar Dados" loading={saving}>
+                <ButtonComponent onClick={()=>{}} type="submit" label="Salvar Dados" loading={saving}>
 
                 </ButtonComponent>
            

@@ -48,10 +48,10 @@ export interface SpinnerProps{
     style?: any
 }
 export interface ButtonProps{
-    loading: boolean,
+    loading?: boolean,
     label: string,
     type: 'submit' | 'button'
-    className: string
+    className?: string
     onClick: ()=>any
 }
 
@@ -66,6 +66,7 @@ export interface SelectComponentProps{
     setState:  React.Dispatch<React.SetStateAction< string>>
     options: {label: string,value: string}[],
     is_required: boolean
+    loading?: boolean
 }
 
 export interface TitleProps{
